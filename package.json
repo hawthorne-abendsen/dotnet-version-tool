@@ -1,0 +1,27 @@
+{
+  "name": "dotnet-version-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hawthorne-abendsen/dotnet-version-tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hawthorne-abendsen/dotnet-version-tool/issues"
+  },
+  "homepage": "https://github.com/hawthorne-abendsen/dotnet-version-tool#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^2.2.0",
+    "fast-xml-parser": "^3.17.3",
+    "globby": "^11.0.1",
+    "xmldom": "^0.3.0"
+  }
+}
