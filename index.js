@@ -17,7 +17,6 @@ function tryParseJson(json) {
     try {
         return JSON.parse(json)
     } catch (err) {
-        console.log(err)
         return null
     }
 }
@@ -29,7 +28,7 @@ function tryParseJson(json) {
  * @param {string} tagName 
  * @param {string} version 
  */
-function setVersion(projectObject, projectElement, tagName, version) {
+function setProjectVersion(projectObject, projectElement, tagName, version) {
     let versionElement = null
     const versionElements = projectObject.getElementsByTagName(tagName)
     if (versionElements.length > 1)
@@ -87,15 +86,14 @@ async function getProjectFilesToUpdate(pattern) {
 }
 
 async function setVersion(version, projectFiles) {
-
     for (let proj of projectFiles) {
         const projectFileContent = await fs.readFileSync(proj, { encoding: 'utf8' })
         const projectObject = new DOMParser().parseFromString(projectFileContent)
         if (projectObject.documentElement.tagName !== projectTagName)
             throw new Error('Invalid project file format.')
         const projectElement = projectObject.documentElement
-        setVersion(projectObject, projectElement, assemblyVersionTagName, version)
-        setVersion(projectObject, projectElement, fileVersionTagName, version)
+        setProjectVersion(projectObject, projectElement, assemblyVersionTagName, version)
+        setProjectVersion(projectObject, projectElement, fileVersionTagName, version)
     }
 }
 
