@@ -85,15 +85,16 @@ async function getProjectFilesToUpdate(pattern) {
     return projectFiles
 }
 
-async function setVersion(version, projectFiles) {
+function setVersion(version, projectFiles) {
     for (let proj of projectFiles) {
-        const projectFileContent = await fs.readFileSync(proj, { encoding: 'utf8' })
+        const projectFileContent = fs.readFileSync(proj, { encoding: 'utf8' })
         const projectObject = new DOMParser().parseFromString(projectFileContent)
         if (projectObject.documentElement.tagName !== projectTagName)
             throw new Error('Invalid project file format.')
         const projectElement = projectObject.documentElement
         setProjectVersion(projectObject, projectElement, assemblyVersionTagName, version)
         setProjectVersion(projectObject, projectElement, fileVersionTagName, version)
+        fs.writeFileSync(proj, projectObject.textContent)
     }
 }
 
@@ -103,7 +104,7 @@ async function run() {
     const pattern = getPattern()
 
     const projectFiles = await getProjectFilesToUpdate(pattern)
-    await setVersion(version, projectFiles)
+    setVersion(version, projectFiles)
 }
 
 run()
