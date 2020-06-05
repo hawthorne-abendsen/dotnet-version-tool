@@ -94,7 +94,7 @@ function setVersion(version, projectFiles) {
         const projectElement = projectObject.documentElement
         setProjectVersion(projectObject, projectElement, assemblyVersionTagName, version)
         setProjectVersion(projectObject, projectElement, fileVersionTagName, version)
-        fs.writeFileSync(proj, projectObject.textContent)
+        fs.writeFileSync(proj, projectObject.toString())
     }
 }
 
