@@ -9,6 +9,7 @@ const globby = require('globby')
 const projectTagName = 'Project'
 const assemblyVersionTagName = 'AssemblyVersion'
 const fileVersionTagName = 'FileVersion'
+const versionTagName = 'Version'
 const propertyGroupTagName = 'PropertyGroup'
 
 const regex = /^[0-9]+\.[0-9]+\.[0-9]+$/
@@ -51,7 +52,7 @@ function setProjectVersion(projectObject, projectElement, tagName, version) {
 }
 
 function getPattern() {
-    const projectsToSet = core.getInput('projects')
+    const projectsToSet = core.getInput('projects') || "**/*.csproj"
     let pattern = tryParseJson(projectsToSet) || []
     if (typeof projectsToSet == 'string' && projectsToSet)
         pattern = [projectsToSet]
@@ -92,8 +93,8 @@ function setVersion(version, projectFiles) {
         if (projectObject.documentElement.tagName !== projectTagName)
             throw new Error('Invalid project file format.')
         const projectElement = projectObject.documentElement
-        setProjectVersion(projectObject, projectElement, assemblyVersionTagName, version)
-        setProjectVersion(projectObject, projectElement, fileVersionTagName, version)
+        for (let tag of [assemblyVersionTagName, fileVersionTagName, versionTagName])
+            setProjectVersion(projectObject, projectElement, tag, version)
         fs.writeFileSync(proj, projectObject.toString())
     }
 }
@@ -108,12 +109,12 @@ async function run() {
 }
 
 run()
-.then(_ => {
-    const versionIsSetMsg = 'Version is set.'
-    console.log(versionIsSetMsg)
-    core.info(versionIsSetMsg)
-})
-.catch(err => {
-    console.error(err)
-    core.setFailed(err.message)
-})
+    .then(_ => {
+        const versionIsSetMsg = 'Version is set.'
+        console.log(versionIsSetMsg)
+        core.info(versionIsSetMsg)
+    })
+    .catch(err => {
+        console.error(err)
+        core.setFailed(err.message)
+    })
