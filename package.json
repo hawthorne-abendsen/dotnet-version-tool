@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/hawthorne-abendsen/dotnet-version-tool#readme",
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.9.1",
     "@actions/github": "^2.2.0",
     "fast-xml-parser": "^3.17.3",
     "globby": "^11.0.1",
